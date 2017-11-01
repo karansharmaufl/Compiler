@@ -1,6 +1,10 @@
 package cop5556fa17;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import cop5556fa17.Scanner.Token;
+import cop5556fa17.TypeUtils.Type;
 import cop5556fa17.AST.ASTNode;
 import cop5556fa17.AST.ASTVisitor;
 import cop5556fa17.AST.Declaration_Image;
@@ -27,10 +31,12 @@ import cop5556fa17.AST.Source_StringLiteral;
 import cop5556fa17.AST.Statement_Assign;
 import cop5556fa17.AST.Statement_In;
 import cop5556fa17.AST.Statement_Out;
+import cop5556fa17.SymbolTable;
+
 
 public class TypeCheckVisitor implements ASTVisitor {
 	
-
+	SymbolTable st = new SymbolTable();
 		@SuppressWarnings("serial")
 		public static class SemanticException extends Exception {
 			Token t;
@@ -110,22 +116,48 @@ public class TypeCheckVisitor implements ASTVisitor {
 			Source_StringLiteral source_StringLiteral, Object arg)
 			throws Exception {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		Object type;
+		try{
+			URL fileOrUrl = new java.net.URL(source_StringLiteral.fileOrUrl);
+			source_StringLiteral.type = Type.URL;
+			type = source_StringLiteral.type;
+		}
+		catch(MalformedURLException mue){
+			source_StringLiteral.type = Type.FILE;
+			type = source_StringLiteral.type;
+		}
+		return type ;
+		
 	}
 
 
 	public Object visitSource_CommandLineParam(
 			Source_CommandLineParam source_CommandLineParam, Object arg)
 			throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		Object type = null;
+		
+		if(source_CommandLineParam.type == Type.INTEGER){
+			type = source_CommandLineParam.paramNum.type;
+		}
+		else{
+			throw new SemanticException(source_CommandLineParam.firstToken, "Invalid pleasev check if you have went wrong");
+		}
+		
+		return type;
+				
 	}
 
 
 	public Object visitSource_Ident(Source_Ident source_Ident, Object arg)
 			throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		Object type=null;
+		if(source_Ident.type==Type.FILE || source_Ident.type==Type.URL){
+			type = st.lookupType(source_Ident.name);
+		}
+		else{
+			throw new SemanticException(source_Ident.firstToken, "Invalid pleasev check if you have went wrong");
+		}
+		return type;
 	}
 
 
@@ -198,14 +230,27 @@ public class TypeCheckVisitor implements ASTVisitor {
 	public Object visitSink_SCREEN(Sink_SCREEN sink_SCREEN, Object arg)
 			throws Exception {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		Object type = null;
+		sink_SCREEN.type = Type.SCREEN; 
+		type = sink_SCREEN.type;
+		return type;
 	}
 
 
 	public Object visitSink_Ident(Sink_Ident sink_Ident, Object arg)
 			throws Exception {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		Object type = null;
+		if(sink_Ident.type == Type.FILE){
+			sink_Ident.type = st.lookupType(sink_Ident.name);
+			type = sink_Ident.type;
+		}
+		else{
+			throw new SemanticException(sink_Ident.firstToken, "There is an error");
+		}
+		return type;
 	}
 
 	public Object visitExpression_BooleanLit(
