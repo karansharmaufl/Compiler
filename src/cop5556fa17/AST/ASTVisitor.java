@@ -52,5 +52,8 @@ public interface ASTVisitor {
 
 	Object visitExpression_Ident(Expression_Ident expression_Ident, Object arg) throws Exception;
 
+	Object visitStatement_Transform(Statement_Assign statement_Assign,
+			Object arg) throws Exception;
+
 	
 }

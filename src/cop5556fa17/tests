@@ -101,20 +101,6 @@ public class TypeCheckTest {
 	 typeCheck(input);
 	 }
 	 
-	 @Test
-	 public void testDec2() throws Exception {
-	 String input = "prog int k = abc;";
-	 thrown.expect(SemanticException.class);
-	 typeCheck(input);
-	 }
-	 
-	 @Test
-	 public void c1() throws Exception {
-	 String input = "prog boolean k = 5 > 6 ? true : false;";
-	 //thrown.expect(SemanticException.class);
-	 typeCheck(input);
-	 }
-	 
 	 /**
 	  * This program does not declare k. The TypeCheckVisitor should
 	  * throw a SemanticException in a fully implemented assignment.
@@ -323,3 +309,17 @@ public class TypeCheckTest {
 	 }
 
 }
+
+
+
+test_complex_expression: Testing failed with input: "p[polar_r[x,y], p2[+x , -y]]". expected:<...hIndexArg [function=[KW_polar_r], arg=Index [e0=Expr...> but was:<...hIndexArg [function=[LSQUARE], arg=Index [e0=Expr...>
+		e15: Testing failed with input: "cart_y[a,r]". expected:<...hIndexArg [function=[KW_cart_y], arg=Index [e0=Expr...> but was:<...hIndexArg [function=[LSQUARE], arg=Index [e0=Expr...>
+		e16: Testing failed with input: "polar_a[x,y]". expected:<...hIndexArg [function=[KW_polar_a], arg=Index [e0=Expr...> but was:<...hIndexArg [function=[LSQUARE], arg=Index [e0=Expr...>
+		e17: Testing failed with input: "cos(3)". expected:<...thExprArg [function=[KW_cos], arg=Expression_Int...> but was:<...thExprArg [function=[LPAREN], arg=Expression_Int...>
+		e18: Testing failed with input: "atan(3)". expected:<...thExprArg [function=[KW_atan], arg=Expression_Int...> but was:<...thExprArg [function=[LPAREN], arg=Expression_Int...>
+		e19: Testing failed with input: "abs(-3)". expected:<...thExprArg [function=[KW_abs], arg=Expression_Una...> but was:<...thExprArg [function=[LPAREN], arg=Expression_Una...>
+		expression6: Testing failed with input: "sin(3)". expected:<...thExprArg [function=[KW_sin], arg=Expression_Int...> but was:<...thExprArg [function=[LPAREN], arg=Expression_Int...>
+		expression8: Testing failed with input: "cart_x[a,r]". expected:<...hIndexArg [function=[KW_cart_x], arg=Index [e0=Expr...> but was:<...hIndexArg [function=[LSQUARE], arg=Index [e0=Expr...>
+		expression9: Testing failed with input: "polar_r[x,y]". expected:<...hIndexArg [function=[KW_polar_r], arg=Index [e0=Expr...> but was:<...hIndexArg [function=[LSQUARE], arg=Index [e0=Expr...>
+		test_complex_expression2: Testing failed with input: "polar_r ( (5) | true)". expected:<...thExprArg [function=[KW_polar_r], arg=Expression_Bin...> but was:<...thExprArg [function=[LPAREN], arg=Expression_Bin...>
+		test_complex_expression3: Testing failed with input: "++--x?x?R:a:abs[A,R]". expected:<...hIndexArg [function=[KW_abs], arg=Index [e0=Expr...> but was:<...hIndexArg [function=[LSQUARE], arg=Index [e0=Expr...>

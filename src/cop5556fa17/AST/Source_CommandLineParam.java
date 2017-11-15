@@ -51,6 +51,10 @@ public class Source_CommandLineParam extends Source {
 		return builder.toString();
 	}
 
+	
+	public Expression getExpressionParamNum(){
+		return this.paramNum;
+	}
 
 	
 	

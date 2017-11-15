@@ -2,8 +2,6 @@ package cop5556fa17;
 
 
 import java.util.*;
-import java.util.Arrays;
-import java.util.HashSet;
 
 import cop5556fa17.Scanner.Kind;
 import cop5556fa17.Scanner.Token;
@@ -136,7 +134,8 @@ public class Parser {
 	public Expression expression() throws SyntaxException {
 		//TODO implement this.
 		Token firstToken = t;
-		Expression e0 = orExpression(); // Expression Condition
+		Expression e0 = orExpression();
+		// Expression Condition
 		if(t.kind.equals(OP_Q)){
 			consume();
 			Expression e1 = expression(); // True Expression
@@ -148,6 +147,7 @@ public class Parser {
 				throw new SyntaxException(t,"Syntax Exception");
 			}
 		}
+		;
 		return e0;
 		
 	}
@@ -249,6 +249,7 @@ public class Parser {
 		else if(t.kind.equals(OP_AT)){
 			consume();
 			Expression e0 = expression();
+			System.out.println("Paramnum:"+e0);
 			src = new Source_CommandLineParam(firstToken, e0);
 		}
 		else{
@@ -297,28 +298,35 @@ public class Parser {
 		return d;
 	 }
 	 
-	void FunctionName() throws SyntaxException {
+	Expression FunctionName() throws SyntaxException {
 		Kind k = t.kind;
+		Expression e0 = null;
 		if(k.equals(KW_sin) || k.equals(KW_cos) || k.equals(KW_atan)){
+			e0 = new Expression_PredefinedName(t, k);
 			consume();
 		}
 		
 		else if(k.equals(KW_abs) || k.equals(KW_cart_x) || k.equals(KW_cart_y)){
+			e0 = new Expression_PredefinedName(t, k);
 			consume();
 		}
 		
 		else if(k.equals(KW_polar_a) || k.equals(KW_polar_r)){
+			
+			e0 = new Expression_PredefinedName(t, k);
 			consume();
 		}
 		else{
 			throw new SyntaxException(t,"Syntax Exception");
 		}
+		return e0;
 	}
 	
 	Expression functionApplication() throws SyntaxException {
 		Expression e=null;
-		Token tok=t;
+		Token tok=t; // Final changes ..........................
 		FunctionName();
+		//System.out.println("jshjs"+t);
 		if(t.kind.equals(LPAREN)){
 			consume();
 			Expression expArg = expression();
@@ -335,8 +343,12 @@ public class Parser {
 				consume();
 				Index indexArg = Selector(); // PLEASE IMPLEMENT THE SELECTOR
 				if(t.kind.equals(RSQUARE)){
+					//System.out.println("Print here");
 					consume();
+					System.out.println("Token:	"+tok);
 					e=new Expression_FunctionAppWithIndexArg(tok, tok.kind , indexArg);
+					
+					
 				}
 				else{
 					throw new SyntaxException(t,"Syntax Exception");
@@ -349,7 +361,9 @@ public class Parser {
 		else {
 			throw new SyntaxException(t, "Syntax Exception");
 		}
+		//System.out.println("Print here"+e);
 		return e;
+		
 			
 	}
 	
@@ -477,7 +491,7 @@ public class Parser {
 		}
 		else if(t.kind.equals(LPAREN)){
 			consume();
-			expression();
+			exp=expression();
 			if(t.kind.equals(RPAREN)){
 				consume();
 			}
@@ -486,11 +500,11 @@ public class Parser {
 			}
 		}
 		else if(k.equals(KW_sin) || k.equals(KW_cos) || k.equals(KW_atan) || k.equals(KW_abs)){
-			functionApplication();
+			return functionApplication();
 		}
 		
 		else if(k.equals(KW_cart_x) || k.equals(KW_cart_y) || k.equals(KW_polar_a) || k.equals(KW_polar_r)){
-			functionApplication();
+			return functionApplication();
 		}
 		
 		else {
@@ -666,6 +680,8 @@ public class Parser {
 		Index i=null;
 		Token tok =t;
 		Expression e1 = expression();
+//		System.out.println("EXprs"+e1);
+//		System.out.println("Token help"+e1);
 		match(COMMA);
 		Expression e2 = expression();
 		i = new Index(t,e1,e2);

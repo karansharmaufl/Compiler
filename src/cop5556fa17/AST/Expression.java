@@ -7,5 +7,9 @@ public abstract class Expression extends ASTNode {
 	public Expression(Token firstToken) {
 		super(firstToken);
 	}
+	
+	public Expression getExpression(){
+		return this;
+	}
 
 }

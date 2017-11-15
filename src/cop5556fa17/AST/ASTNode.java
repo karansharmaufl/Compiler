@@ -6,7 +6,8 @@ import cop5556fa17.TypeUtils.Type;
 public abstract class ASTNode {
 	
 	final public Token firstToken;
-	public Type type;
+	public Type type_basic;
+	public Declaration dec;
 	
 	public ASTNode(Token firstToken) {
 		super();

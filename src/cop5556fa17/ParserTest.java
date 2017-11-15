@@ -121,18 +121,13 @@ public class ParserTest {
 	
 	@Test
 	public void functionAppIndexArg() throws LexicalException, SyntaxException {
-		String input = "sin[l&l,p&q]";
+		String input =  "++--x?x?R:a:abs[A,R]";
 		show(input);
 		Scanner scanner = new Scanner(input).scan(); 
 		show(scanner); 
-		Expression i = new Parser(scanner).functionApplication();
+		Expression i = new Parser(scanner).expression();
 		System.out.println("Print"+i.firstToken);
-		show(i);
-//		assertEquals(KW_r,i.firstToken.kind);
-//		assertEquals(Expression_PredefinedName.class,i.e0.getClass());
-//		assertEquals(Expression_PredefinedName.class,i.e1.getClass());
-		//assertsEquals();
-
+		show(i); 
 	}
 	
 	@Test// To be completed

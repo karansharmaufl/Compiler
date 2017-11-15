@@ -25,7 +25,7 @@ public class SymbolTable {
     Type lookupType(String key){
         Type tp = null;
         if(hm.containsKey(key)){
-            tp = hm.get(key).type;
+            tp = hm.get(key).type_basic;
         }
         return tp;
     }

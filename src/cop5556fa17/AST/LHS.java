@@ -6,6 +6,8 @@ public class LHS extends ASTNode{
 
 	public final String name;
 	public final Index index;
+	
+	public boolean isCartesian;
 
 
 
@@ -13,6 +15,14 @@ public class LHS extends ASTNode{
 		super(firstToken);
 		this.name = name.getText();
 		this.index = index;
+	}
+	
+	public boolean isCartesian(){
+		return this.isCartesian;
+	}
+	
+	public void setCartesian(boolean cartesian){
+		this.isCartesian = cartesian;
 	}
 
 	@Override
